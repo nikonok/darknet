@@ -10,19 +10,27 @@
 4.[How to use demo mode](#how_to_use_demo)
 
 
-# Some info
+## Some info
 
 This repository is forked from: (https://github.com/AlexeyAB/darknet)
 
 [More details](http://pjreddie.com/darknet/yolo/)
 
-Requires:
+#### Requires:
 * **MS Visual Studio 2015 (v140)**: [link1](https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409), [link2(ISO)](https://go.microsoft.com/fwlink/?LinkId=615448&clcid=0x409)
 * **CUDA 8.0 for Windows x64**: https://developer.nvidia.com/cuda-downloads
 * **OpenCV 2.4.9**: https://sourceforge.net/projects/opencvlibrary/files/opencv-win/2.4.9/opencv-2.4.9.exe/download
   - To compile without OpenCV - remove define OPENCV from: Visual Studio->Project->Properties->C/C++->Preprocessor
   - To compile with different OpenCV version - change in file yolo.c each string look like **#pragma comment(lib, "opencv_core249.lib")** from 249 to required version.
   - With OpenCV will show image or video detection in window and store result to: test_dnn_out.avi
+
+##### Pre-trained models for different cfg-files can be downloaded from (smaller -> faster & lower quality):
+* `yolo.cfg` (256 MB COCO-model) - require 4 GB GPU-RAM: http://pjreddie.com/media/files/yolo.weights
+* `yolo-voc.cfg` (256 MB VOC-model) - require 4 GB GPU-RAM: http://pjreddie.com/media/files/yolo-voc.weights
+* `tiny-yolo.cfg` (60 MB COCO-model) - require 1 GB GPU-RAM: http://pjreddie.com/media/files/tiny-yolo.weights
+* `tiny-yolo-voc.cfg` (60 MB VOC-model) - require 1 GB GPU-RAM: http://pjreddie.com/media/files/tiny-yolo-voc.weights
+
+Put it near compiled: `darknet.exe`
 
 <a name="how_to_compile"></a>
 ## How to compile

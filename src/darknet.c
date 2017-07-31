@@ -348,8 +348,114 @@ void visualize(char *cfgfile, char *weightfile)
 #endif
 }
 
+
+
+#ifndef Queue
+#define Queue
+//simple queue write by intern
+#define MAX 10
+
+char* intArray[MAX];
+int front = 0;
+int rear = -1;
+int ItemCount = 0;
+
+int isEmpty() {
+	if (ItemCount == 0)
+		return 1;
+	else
+		return 0;
+}
+
+int isFull() {
+	if (ItemCount == MAX)
+		return 1;
+	else
+		return 0;
+}
+
+int size() {
+	return ItemCount;
+}
+
+void push(char* data) {
+	if (!isFull()) {
+		if (rear == MAX - 1) {
+			rear = -1;
+		}
+		intArray[++rear] = _strdup(data);
+		ItemCount++;
+	}
+	else
+		printf("Queue is full!\n");
+}
+char* pop() {
+	if (isEmpty())
+	{
+		printf("Queue is empty!\n");
+		return NULL;
+	}
+	char* data = _strdup(intArray[front++]);
+	if (front == MAX) {
+		front = 0;
+	}
+	ItemCount--;
+	return data;
+}
+#endif
+
+//func for parsing ini file
+static int handler_main(void* user, const char* section, const char* name, const char* value)
+{
+	static int bFlag = 0;
+#define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
+	if (MATCH("demo_options", "demo_mode_on")) {
+		bFlag = strcmp(value, "true") == 0;
+	}
+	else if (bFlag)
+	{
+		if (MATCH("demo_options", "func") || MATCH("demo_options", "mode") 
+			|| MATCH("demo_options", "file1") || MATCH("demo_options", "file2")
+			|| MATCH("demo_options", "file3")) 
+		{
+			push(value);
+		}		
+		else if (MATCH("demo_options", "webcam_mode") || MATCH("demo_options", "webcam_num")) {
+			if (strcmp(value, "empty") != 0)
+			{
+				push(value);
+			}
+		}
+		else {
+			return 0;  /* unknown section/name, error */
+		}
+		return 1;
+	}
+}
+
 int main(int argc, char **argv)
 {
+	//parsing ini file
+	if (argc == 2 && strcmp(argv[1], "parsing_file") == 0)
+	{
+		if (ini_parse("initialization.ini", handler_main, NULL) < 0)
+		{
+			printf("Can't open configuration file!");
+		}
+		else
+		{
+			char *tmp = _strdup(argv[0]);
+			free(argv);
+			argv = calloc(size() + 1, sizeof(char*));
+			argc = size() + 1;
+			argv[0] = tmp;
+			for (int i = 1; i < argc; i++)
+			{
+				argv[i] = pop();
+			}
+		}
+	}
+
     //test_resize("data/bad.jpg");
     //test_box();
     //test_convolutional_layer();

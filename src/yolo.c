@@ -5,6 +5,10 @@
 #include "parser.h"
 #include "box.h"
 #include "demo.h"
+//added by intern
+//https://github.com/benhoyt/inih
+#include "ini.h"
+//#include "ini.c"
 
 #ifdef OPENCV
 #pragma comment(lib, "opencv_core249.lib")  
@@ -19,10 +23,44 @@
 
 char *voc_names[] = {"aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"};
 
+//intern struct
+typedef struct 
+{
+	char* train_images;
+	char* backup_diractory;
+} conf_train;
+
+//func for parsing ini file
+static int handler_train(void* user, const char* section, const char* name, const char* value)
+{
+	conf_train* pconfig = (conf_train*)user;
+
+#define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
+	if (MATCH("files", "train_images")) {
+		pconfig->train_images = _strdup(value);
+	}
+	else if (MATCH("files", "backup_diractory")) {
+		pconfig->backup_diractory = _strdup(value);
+	}
+	else {
+		return 0;  /* unknown section/name, error */
+	}
+	return 1;
+}
+
 void train_yolo(char *cfgfile, char *weightfile)
 {
-    char *train_images = "/data/voc/train.txt";
-    char *backup_directory = "/home/pjreddie/backup/";
+	/*char *train_images = "/data/voc/train.txt";
+	char *backup_directory = "/home/pjreddie/backup/";*/
+	//added by intern
+	conf_train cfg;
+	if (ini_parse("initialization.ini", handler_train, &cfg) < 0)
+	{
+		printf("Can't open configuration file!");
+	}
+	char* train_images = cfg.train_images;
+	char* backup_directory = cfg.backup_diractory;
+
     srand(time(0));
     char *base = basecfg(cfgfile);
     printf("%s\n", base);

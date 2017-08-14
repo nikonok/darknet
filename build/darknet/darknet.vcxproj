@@ -126,7 +126,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -148,6 +148,7 @@
       <AdditionalLibraryDirectories>C:\opencv_2.4.9\opencv\build\x64\vc14\lib;C:\opencv_2.4.9\opencv\build\x64\vc12\lib;$(CUDA_PATH)lib\$(PlatformName);$(cudnn)\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>..\..\3rdparty\lib\x64\pthreadVC2.lib;cublas.lib;curand.lib;cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalOptions>"opencv_core249.lib" "opencv_imgproc249.lib" "opencv_highgui249.lib" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
@@ -257,7 +258,6 @@
     <ClInclude Include="..\..\src\gru_layer.h" />
     <ClInclude Include="..\..\src\im2col.h" />
     <ClInclude Include="..\..\src\image.h" />
-    <ClInclude Include="..\..\src\ini.h" />
     <ClInclude Include="..\..\src\layer.h" />
     <ClInclude Include="..\..\src\list.h" />
     <ClInclude Include="..\..\src\local_layer.h" />
